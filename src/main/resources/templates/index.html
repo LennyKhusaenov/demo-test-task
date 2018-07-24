@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+</head>
+<body>
+<br/>
+<div
+    class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-4 col-xs-offset-3 col-sm-offset-3 col-md-offset-3 col-lg-offset-3">
+  <div class="row">
+    <h3 class="text-center">Please enter your name and pick the Sectors you are currently involved
+      in.</h3>
+  </div>
+  <form class="form-horizontal" method="post" th:action="@{/}" th:object="${user}">
+    Name:
+    <br/>
+    <label>
+      <input type="text" class="form-control" required placeholder="Your name" th:field="*{name}">
+    </label>
+    <br/>
+    <div>
+      Sectors:
+      <select multiple class="form-control" size="10" required th:field="*{sectorId}">
+        <div th:fragment="sector (depth)" th:remove="tag">
+          <option th:style="'margin-left:'+ @{${depth}}+'px'" th:each="sector : ${sectors}"
+                  th:value="${sector}">
+            <span th:text="${sector.label}"></span>
+            <div th:include="this::sector(depth=${#objects.nullSafe(depth,1)+10})"
+                 th:with="sectors = ${sector.children}" th:remove="tag"></div>
+          </option>
+        </div>
+      </select>
+    </div>
+    <br/>
+    <label>
+      <input type="checkbox" required th:field="*{agreement}">
+    </label> Agree to terms
+    <br/>
+    <br/>
+    <button class="btn btn-primary" type="submit" value="Save">Save</button>
+  </form>
+</div>
+</body>
+</html>
