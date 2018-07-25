@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 @SpringBootApplication
-@EnableJdbcHttpSession(maxInactiveIntervalInSeconds = 1800)
 public class HelmesTestTaskApplication {
 
     public static void main(String[] args) {

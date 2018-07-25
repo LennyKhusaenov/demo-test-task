@@ -20,5 +20,3 @@ spring:
  datasource:
    # data source credentials must be stored in environment variables
    url: jdbc:h2:~/test;MODE=PostgreSQL
-   username: postgres
-   password: postgres

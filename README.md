@@ -16,3 +16,5 @@ Requests are sent to the address {protocol}://{host}:8096/ (port number defined 
 8. User can edit data during the time of the session
 
 The technologies used are listed in pom.xml
+
+backup and insert scripts are located in resources/sql directory

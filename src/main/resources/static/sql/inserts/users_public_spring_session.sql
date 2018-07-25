@@ -1,0 +1,1 @@
+INSERT INTO public.spring_session (primary_id, session_id, creation_time, last_access_time, max_inactive_interval, expiry_time, principal_name) VALUES ('872b4615-49c5-428f-8638-c504ce85e0db', '3a096072-e8bb-4434-9d44-d99018255671', 1532522222203, 1532522222204, 180, 1532522402204, null);
