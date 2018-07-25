@@ -23,4 +23,4 @@ mvnw
 
 mvnw\.cmd
 
-target/classes/
+target/*

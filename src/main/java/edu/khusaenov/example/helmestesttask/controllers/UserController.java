@@ -1,12 +1,13 @@
 package edu.khusaenov.example.helmestesttask.controllers;
 
 
-import edu.khusaenov.example.helmestesttask.model.Sector;
 import edu.khusaenov.example.helmestesttask.model.User;
 import edu.khusaenov.example.helmestesttask.repository.UserRepository;
 import edu.khusaenov.example.helmestesttask.service.SectorService;
+import javax.servlet.http.HttpSession;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * @author Khusaenov on 20.07.2018
  */
+@Slf4j
 @Controller
 @RequestMapping("/")
 public class UserController {
 
+    private static final String LOG_MESSAGE = "User with id = {}";
     private final UserRepository userRepository;
     private final SectorService sectorService;
 
@@ -33,29 +36,40 @@ public class UserController {
         this.sectorService = sectorService;
     }
 
-    @GetMapping(/*produces = MediaType.APPLICATION_JSON_VALUE*/)
-    public String getUserInformation(Model model) {
+    @GetMapping
+    public String getUserAndSectorInformation(Model model, @NonNull HttpSession httpSession) {
+        User userFromDatabase = userRepository.findUserBySessionId(httpSession.getId())
+                .orElse(new User());
         model.addAttribute("sectors", sectorService.getRecursiveSector());
-        model.addAttribute("user", new User());
+        model.addAttribute("user", userFromDatabase);
         return "index";
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String addNewUser(@ModelAttribute String user/*, @RequestHeader String sessionId*/) {
-//        Optional<User> userFromDataBase = userRepository.findUserBySessionId(sessionId);
-//        user.setSessionId(sessionId);
-//        return userFromDataBase.map(user1 -> updateUserInformation(user, user1))
-//                .orElseGet(() -> userRepository.save(user));
-        return "index";
+    @PostMapping
+    public String addNewUser(@ModelAttribute("user") @NonNull User user,
+            @NonNull HttpSession httpSession) {
+        user.setSessionId(httpSession.getId());
+        try {
+            if (httpSession.isNew()) {
+                userRepository.save(user);
+                log.debug(LOG_MESSAGE + " was successfully saved", user.getSessionId());
+            } else {
+                updateUserInformation(user);
+                log.debug(LOG_MESSAGE + " was updated", user.getSessionId());
+            }
+        } catch (Exception e) {
+            log.error(LOG_MESSAGE + "was rejected", user.getSessionId());
+        }
+        return "redirect:/";
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    private User updateUserInformation(User user, User userFromDatabase) {
-
-        userFromDatabase.setAgreement(user.getAgreement());
-        userFromDatabase.setName(user.getName());
-        userFromDatabase.setSectorId(user.getSectorId());
-        return userRepository.save(userFromDatabase);
+    @PutMapping
+    private User updateUserInformation(User user) {
+        User update = user.copy();
+        update.setAgreement(user.getAgreement());
+        update.setName(user.getName());
+        update.setSector(user.getSector());
+        return userRepository.save(update);
     }
 
 }

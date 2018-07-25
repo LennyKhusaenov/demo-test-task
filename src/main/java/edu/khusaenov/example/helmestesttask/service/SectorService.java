@@ -2,6 +2,7 @@ package edu.khusaenov.example.helmestesttask.service;
 
 import edu.khusaenov.example.helmestesttask.model.Sector;
 import edu.khusaenov.example.helmestesttask.repository.SectorRepository;
+import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class SectorService {
     }
 
     public List<Sector> getRecursiveSector() {
-        List<Sector> rootSectorList = sectorRepository.findByParentIsNull();
+        List<Sector> rootSectorList = sectorRepository.findByParentIsNull()
+                .orElse(Collections.emptyList());
         rootSectorList.forEach(this::recursiveTree);
         return rootSectorList;
     }

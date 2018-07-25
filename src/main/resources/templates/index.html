@@ -14,19 +14,21 @@
     <h3 class="text-center">Please enter your name and pick the Sectors you are currently involved
       in.</h3>
   </div>
-  <form class="form-horizontal" method="post" th:action="@{/}" th:object="${user}">
+  <form class="form-horizontal" action="#" th:action="@{/}" th:object="${user}" method="post">
     Name:
     <br/>
     <label>
-      <input type="text" class="form-control" required placeholder="Your name" th:field="*{name}">
+      <input type="text" class="form-control" required placeholder="Your name"
+             th:utext="${user.name}" th:field="*{name}">
     </label>
     <br/>
     <div>
       Sectors:
-      <select multiple class="form-control" size="10" required th:field="*{sectorId}">
+      <select multiple class="form-control" size="10" required th:field="*{sector}">
         <div th:fragment="sector (depth)" th:remove="tag">
           <option th:style="'margin-left:'+ @{${depth}}+'px'" th:each="sector : ${sectors}"
-                  th:value="${sector}">
+                  th:value="${sector.sectorId}"
+                  th:selected="(${user.containsSectorId()} and ${sector.sectorId}==*{sector.sectorId})">
             <span th:text="${sector.label}"></span>
             <div th:include="this::sector(depth=${#objects.nullSafe(depth,1)+10})"
                  th:with="sectors = ${sector.children}" th:remove="tag"></div>
@@ -36,7 +38,7 @@
     </div>
     <br/>
     <label>
-      <input type="checkbox" required th:field="*{agreement}">
+      <input type="checkbox" th:value="${user.agreement}" required th:field="*{agreement}">
     </label> Agree to terms
     <br/>
     <br/>

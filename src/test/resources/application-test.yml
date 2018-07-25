@@ -9,7 +9,7 @@ spring:
    hibernate:
     temp:
      use_jdbc_metadata_defaults: false
-  database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  database-platform: org.hibernate.dialect.H2Dialect
   hibernate:
     ddl-auto: update
  thymeleaf:
@@ -19,6 +19,6 @@ spring:
   suffix: .html
  datasource:
    # data source credentials must be stored in environment variables
-   url: jdbc:postgresql://localhost:5432/users
+   url: jdbc:h2:~/test;MODE=PostgreSQL
    username: postgres
    password: postgres
