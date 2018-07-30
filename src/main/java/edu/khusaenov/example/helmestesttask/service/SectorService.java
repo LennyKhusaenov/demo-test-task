@@ -7,7 +7,6 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 /**
  * @author Khusaenov on 22.07.2018
@@ -27,16 +26,9 @@ public class SectorService {
     public List<Sector> getRecursiveSector() {
         List<Sector> rootSectorList = sectorRepository.findByParentIsNull()
                 .orElse(Collections.emptyList());
-        rootSectorList.forEach(this::recursiveTree);
+        log.debug("Sectors data from database = {}", rootSectorList);
         return rootSectorList;
     }
 
-    private void recursiveTree(Sector sector) {
-        log.debug("Sector name is {}", sector.getLabel());
-        if (!CollectionUtils.isEmpty(sector.getChildren())) {
-            sector.getChildren().forEach(this::recursiveTree);
-
-        }
-    }
 }
 
