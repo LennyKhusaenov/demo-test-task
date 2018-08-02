@@ -62,7 +62,7 @@ public class User {
     public boolean isUsersSector(Long sectorId) {
         return !CollectionUtils.isEmpty(sectors.stream()
                 .filter(sector -> sectorId.equals(sector.getSectorId()))
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList()));
 
     }
 
