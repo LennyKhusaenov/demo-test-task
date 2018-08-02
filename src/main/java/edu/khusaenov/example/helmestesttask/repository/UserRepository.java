@@ -14,6 +14,5 @@ public interface UserRepository extends CrudRepository<User, String> {
 
     Optional<User> findUserBySessionId(String sessionId);
 
-    Optional<User> findUserBySectorLike(Sector sector);
 
 }

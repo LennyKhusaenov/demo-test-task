@@ -24,13 +24,13 @@
     <br/>
     <div>
       Sectors:
-      <select multiple class="form-control" size="10" required th:field="*{sector}">
-        <div th:fragment="sector (depth)" th:remove="tag">
+      <select multiple class="form-control" size="10" required th:field="*{sectors}">
+        <div th:fragment="sectors (depth)" th:remove="tag">
           <option th:style="'margin-left:'+ @{${depth}}+'px'" th:each="sector : ${sectors}"
                   th:value="${sector.sectorId}"
-                  th:selected="(${user.containsSectorId()} and ${sector.sectorId}==*{sector.sectorId})">
+                  th:selected="(${user.containsSectorId()} and ${user.isUsersSector(sector.getSectorId())})">
             <span th:text="${sector.label}"></span>
-            <div th:include="this::sector(depth=${#objects.nullSafe(depth,1)+10})"
+            <div th:include="this::sectors(depth=${#objects.nullSafe(depth,1)+10})"
                  th:with="sectors = ${sector.children}" th:remove="tag"></div>
           </option>
         </div>

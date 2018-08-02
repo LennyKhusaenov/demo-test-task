@@ -2,7 +2,9 @@ package edu.khusaenov.example.helmestesttask.utils;
 
 import edu.khusaenov.example.helmestesttask.model.Sector;
 import edu.khusaenov.example.helmestesttask.model.User;
+import java.util.Collections;
 import java.util.UUID;
+
 
 /**
  * @author Khusaenov on 25.07.2018
@@ -19,7 +21,7 @@ public class DataCreator {
         User user = new User();
         user.setAgreement(true);
         user.setName(UUID.randomUUID().toString());
-        user.setSector(createSector(sectorId));
+        user.setSectors(Collections.singletonList(createSector(sectorId)));
         return user;
     }
 

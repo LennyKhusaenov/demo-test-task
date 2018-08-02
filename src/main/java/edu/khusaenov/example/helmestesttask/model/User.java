@@ -1,33 +1,30 @@
 package edu.khusaenov.example.helmestesttask.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 
 
 /**
  * @author Khusaenov on 20.07.2018
  */
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "users")
-@AllArgsConstructor
-@NoArgsConstructor
 @Slf4j
-@EqualsAndHashCode
-@ToString
 public class User {
 
     @Id
@@ -40,23 +37,33 @@ public class User {
     @Column(nullable = false)
     private Boolean agreement;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "sector_id", nullable = false)
-    private Sector sector;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_sector", joinColumns = {
+            @JoinColumn(name = "session_id")}, inverseJoinColumns = {
+            @JoinColumn(name = "sector_id")})
+    private List<Sector> sectors = new ArrayList<>();
 
     public User copy() {
         User copy = new User();
         copy.setSessionId(getSessionId());
         copy.setName(getName());
         copy.setAgreement(getAgreement());
-        if (getSector() != null) {
-            copy.setSector(getSector().copy());
+        if (getSectors() != null) {
+            copy.setSectors(
+                    getSectors().stream().map(Sector::copy).collect(Collectors.toList()));
         }
         return copy;
     }
 
     public boolean containsSectorId() {
-        return sector != null && sector.getSectorId() != null;
+        return !CollectionUtils.isEmpty(sectors);
+    }
+
+    public boolean isUsersSector(Long sectorId) {
+        return !CollectionUtils.isEmpty(sectors.stream()
+                .filter(sector -> sectorId.equals(sector.getSectorId()))
+                .collect(Collectors.toSet()));
+
     }
 
 

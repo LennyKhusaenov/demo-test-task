@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -42,6 +43,9 @@ public class Sector implements Serializable {
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Sector> children = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "sectors")
+    private List<User> users = new ArrayList<>();
 
 
     Sector copy() {
