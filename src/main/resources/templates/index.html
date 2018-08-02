@@ -28,7 +28,7 @@
         <div th:fragment="sectors (depth)" th:remove="tag">
           <option th:style="'margin-left:'+ @{${depth}}+'px'" th:each="sector : ${sectors}"
                   th:value="${sector.sectorId}"
-                  th:selected="(${user.containsSectorId()} and ${user.isUsersSector(sector.getSectorId())})">
+                  th:selected="(${user.isUsersSector(sector.getSectorId())})">
             <span th:text="${sector.label}"></span>
             <div th:include="this::sectors(depth=${#objects.nullSafe(depth,1)+10})"
                  th:with="sectors = ${sector.children}" th:remove="tag"></div>

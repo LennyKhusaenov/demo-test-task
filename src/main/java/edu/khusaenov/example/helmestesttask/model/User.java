@@ -1,9 +1,7 @@
 package edu.khusaenov.example.helmestesttask.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -54,13 +52,8 @@ public class User {
         }
         return copy;
     }
-
-    public boolean containsSectorId() {
-        return !CollectionUtils.isEmpty(sectors);
-    }
-
     public boolean isUsersSector(Long sectorId) {
-        return !CollectionUtils.isEmpty(sectors.stream()
+        return !CollectionUtils.isEmpty(sectors) && !CollectionUtils.isEmpty(sectors.stream()
                 .filter(sector -> sectorId.equals(sector.getSectorId()))
                 .collect(Collectors.toList()));
 
