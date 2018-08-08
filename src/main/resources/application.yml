@@ -1,24 +1,24 @@
 server:
   port: 8096
 spring:
- session:
-  jdbc:
-    initialize-schema: always
- jpa:
-  properties:
-   hibernate:
-    temp:
-     use_jdbc_metadata_defaults: false
-  database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-  hibernate:
-    ddl-auto: update
- thymeleaf:
-  cache: false
-  enabled: true
-  prefix: classpath:/templates/
-  suffix: .html
- datasource:
-   # data source credentials must be stored in environment variables
-   url: jdbc:postgresql://localhost:5432/users
-   username: postgres
-   password: postgres
+  session:
+    jdbc:
+      initialize-schema: always
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    hibernate:
+      ddl-auto: update
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+  datasource:
+    # data source credentials must be stored in environment variables
+    url: jdbc:postgresql://localhost:5432/users
+    username: postgres
+    password: postgres

@@ -52,6 +52,7 @@ public class User {
         }
         return copy;
     }
+
     public boolean isUsersSector(Long sectorId) {
         return !CollectionUtils.isEmpty(sectors) && !CollectionUtils.isEmpty(sectors.stream()
                 .filter(sector -> sectorId.equals(sector.getSectorId()))
