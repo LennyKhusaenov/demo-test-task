@@ -24,3 +24,7 @@ mvnw
 mvnw\.cmd
 
 target/*
+
+src/main/resources/static/sql/dump/
+
+src/main/resources/static/sql/inserts/
